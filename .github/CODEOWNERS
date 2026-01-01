@@ -1,0 +1,16 @@
+# Default owner for all files
+* @raolivei
+
+# Documentation
+/docs/ @raolivei
+*.md @raolivei
+
+# Frontend code
+/frontend/ @raolivei
+
+# Database schema
+/db/ @raolivei
+
+# AI prompts
+/prompts/ @raolivei
+
