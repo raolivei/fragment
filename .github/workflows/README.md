@@ -55,3 +55,5 @@ The `CI` workflow is required for branch protection. All jobs must pass (or be a
 - **Dependency Scan**: Verify `package-lock.json` exists in `frontend/`
 - **Secret Scan**: Review any warnings about potential secrets
 
+
+
