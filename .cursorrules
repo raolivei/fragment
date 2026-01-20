@@ -1,103 +1,59 @@
 # Fragment - Cursor Rules
 
-## Workspace Configuration
+## Workspace
 
-**IMPORTANT**: This project is part of the `raolivei` workspace. Workspace-level configuration is managed in the `workspace-config` repository.
+See `../workspace-config/docs/PROJECT_CONVENTIONS.md` for shared conventions (git workflow, CHANGELOG, local-first architecture, product constraints pattern).
 
-- **Port Assignments**: See `../workspace-config/ports/.env.ports` for assigned ports (to be assigned)
-- **Workspace Conventions**: See `../workspace-config/docs/PROJECT_CONVENTIONS.md`
-- **Port Conflict Checker**: Run `../workspace-config/scripts/check-ports.sh` before starting services
-- **Workspace Scripts**: Available in `../workspace-config/scripts/`
+## Commands
+
+```bash
+# Development
+cd frontend && npm install
+npm run dev                    # Start dev server
+
+# Testing
+npm test                       # Vitest unit tests
+npm run test:e2e              # Playwright E2E (future)
+
+# Linting (run after changes)
+npm run lint
+npm run typecheck
+```
+
+## Workflow
+
+1. Always lint/typecheck after code changes
+2. Run tests before committing
+3. Update CHANGELOG.md for all changes
+4. Never run git commands at workspace root
 
 ## Project Overview
 
-Fragment is a calm, premium, introspective application for observing and understanding different identity fragments (contexts or modes of self) over time.
+Calm, introspective app for observing identity fragments (contexts or modes of self). **Local-first**, no backend required.
 
-**Product Philosophy**: Fragment provides **observability of self**, not improvement of self. It is quiet, respectful, slow, and non-directive.
-
-**CLUSTER**: Not yet deployed. Future deployment on the **`eldertree`** Raspberry Pi k3s cluster (if needed).
-
-## Project Structure
+**Philosophy**: Provides **observability of self**, not improvement. Quiet, respectful, slow, non-directive.
 
 ```
 fragment/
-├── app/                    # Application logic
-│   ├── orbit/             # Orbit visualization
-│   ├── fragments/         # Fragment CRUD
-│   ├── inference/         # Ephemeral inference
-│   └── ai/                # Constrained AI prompts
-├── db/                     # Database schema (SQLite)
-├── docs/                   # Documentation
-│   ├── MASTER_PROMPT.md  # Complete product definition
-│   ├── philosophy.md     # Design principles
-│   ├── legal.md          # Legal disclaimers
-│   └── privacy.md        # Privacy policy
-├── frontend/              # React + TypeScript + Vite
-│   ├── src/
-│   │   ├── components/  # React components
-│   │   ├── stores/       # Zustand state management
-│   │   ├── db/          # SQLite via sql.js
-│   │   └── utils/        # Utilities
-├── prompts/               # AI prompt constraints
-└── scripts/               # Utility scripts
+├── frontend/           # React + TypeScript + Vite
+│   ├── src/components/ # React components
+│   ├── src/stores/     # Zustand state
+│   ├── src/db/         # SQLite via sql.js
+│   └── src/utils/      # Utilities
+├── db/                 # Database schema
+├── docs/               # Product docs
+│   ├── MASTER_PROMPT.md   # Complete definition
+│   └── philosophy.md      # Design principles
+└── prompts/            # AI prompt constraints
 ```
 
-## Tech Stack
+## Code Style
 
-- **Frontend**: React + TypeScript + Vite
-- **Visualization**: Canvas/SVG for Orbit view (D3-lite, not full D3)
-- **Database**: SQLite (local-first via sql.js)
-- **State Management**: Zustand
-- **AI**: Stateless, constrained prompts (OpenAI/Anthropic via server-side proxy)
-- **Deployment**: PWA (future: React Native, Tauri desktop)
+**TypeScript**: See `frontend/src/components/` for component patterns. Use Zustand for state, Canvas/SVG for Orbit visualization.
 
-## Code Conventions
+**Database**: Local-first via sql.js. Store only user-entered data. Never store AI inferences as truth.
 
-### TypeScript (Frontend)
-
-- Use TypeScript strictly (no `any` types)
-- Functional components with hooks only
-- Zustand for global state management
-- Canvas/SVG for Orbit visualization
-- Keep components small and focused
-- Use `utils/` for reusable functions
-- Follow Fragment's calm, non-directive philosophy in UI
-
-### Database (SQLite)
-
-- Local-first architecture
-- Use sql.js for browser SQLite
-- Store only user-explicitly-entered data
-- Never store AI inferences as truth
-- All inferences must be dismissible and reversible
-
-### AI Integration
-
-- **CRITICAL**: Follow `prompts/reflection.md` constraints strictly
-- AI is a reflective lens, not an agent
-- Never give advice, suggest actions, or interpret mental health
-- All AI calls must be stateless (no conversation memory)
-- All AI responses must be dismissible and reversible
-
-## Git Workflow
-
-**CRITICAL**: Create different branches for different work. Do not mix up work - each branch should focus on a single feature, fix, or task. Keep branches focused and separate.
-
-**Branch Naming:**
-
-- `feature/<name>` - New features
-- `fix/<name>` - Bug fixes
-- `docs/<name>` - Documentation updates
-- `refactor/<name>` - Code refactoring
-
-**Commit Messages:**
-
-- Use conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`
-- Scope when helpful: `feat(orbit):`, `fix(db):`
-
-**Git Command Restrictions:**
-
-- **Never run git commands at workspace root**: Always ensure you are in the project directory (`fragment/`) before running any git commands. Never run git commands at `/Users/roliveira/WORKSPACE/raolivei`
+**AI Integration**: Follow `prompts/reflection.md` strictly. AI is a reflective lens, not an agent.
 
 ## Product Constraints (Non-Negotiable)
 
@@ -114,57 +70,19 @@ Fragment must NEVER:
 
 If a feature feels motivating, optimizing, or corrective — remove it.
 
-## Development Setup
+## Tech Stack
 
-### Prerequisites
+- **Frontend**: React + TypeScript + Vite
+- **Database**: SQLite (sql.js for browser)
+- **State**: Zustand
+- **Visualization**: Canvas/SVG (D3-lite)
+- **AI**: Stateless, constrained prompts
+- **Deployment**: PWA (future: React Native, Tauri)
 
-- Node.js 20+
-- npm or yarn
+## Key Principles
 
-### Local Development
-
-```bash
-# Install dependencies
-cd frontend
-npm install
-
-# Start development server
-npm run dev
-```
-
-## Testing
-
-- Use Vitest for unit tests
-- Test files: `*.test.ts` or `*.spec.ts`
-- Component tests: Testing Library
-- E2E tests: Playwright (future)
-
-## Documentation
-
-- `README.md` - Overview and quick start
-- `docs/MASTER_PROMPT.md` - Complete product definition
-- `docs/philosophy.md` - Design principles
-- `docs/legal.md` - Legal disclaimers
-- `docs/privacy.md` - Privacy policy
-- `CHANGELOG.md` - Version history
-
-## CHANGELOG Requirements
-
-**ALWAYS update CHANGELOG.md when:**
-
-- ✅ Adding new features (user-facing or internal)
-- ✅ Fixing bugs or issues
-- ✅ Changing behavior, UI, or UX
-- ✅ Making breaking changes or deprecations
-- ✅ Updating dependencies that affect functionality
-
-**Format:** Follow [Keep a Changelog](https://keepachangelog.com/) format.
-
-## Important Notes
-
-- **Local-First** - Data lives on user's device, no backend required initially
-- **Privacy-Forward** - No data collection, no tracking
-- **Calm Interface** - Quiet mirror, not a dashboard
-- **Non-Directive** - Never tells users what to do
-- **Slow Usage** - Weekly interactions, no daily pressure
-
+- **Local-First**: Data on user's device only
+- **Privacy-Forward**: No data collection
+- **Calm Interface**: Quiet mirror, not dashboard
+- **Non-Directive**: Never tells users what to do
+- **Slow Usage**: Weekly interactions, no pressure

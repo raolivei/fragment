@@ -15,6 +15,10 @@ permissions:
   security-events: write
   actions: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # CodeQL Analysis for security vulnerabilities
   codeql-analysis:
@@ -93,4 +97,6 @@ jobs:
             echo "✅ No obvious secrets found in source files"
           fi
         continue-on-error: true
+
+
 
