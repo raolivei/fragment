@@ -23,7 +23,7 @@ jobs:
   # CodeQL Analysis for security vulnerabilities
   codeql-analysis:
     name: CodeQL Analysis
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       actions: read
       contents: read
@@ -55,7 +55,7 @@ jobs:
   # Dependency vulnerability scanning
   dependency-scan:
     name: Dependency Vulnerability Scan
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       security-events: write
@@ -73,7 +73,7 @@ jobs:
   # Secret scanning
   secret-scan:
     name: Secret Scanning
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
 
